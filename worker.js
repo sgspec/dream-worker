@@ -1,11 +1,11 @@
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    // รับค่าความฝันจาก URL เช่น ?dream=ฝันว่าถูกหวย
+    // รับค่าความฝันจาก URL เช่น ?dream=ฝันเห็นทอง
     const dream = url.searchParams.get("dream") || "ฝันเห็นงู";
 
-    // เลือกใช้รุ่น gemini-1.5-flash เพื่อความเร็วและเสถียร
-    const apiEndpoint = `https://generativelanguage.googleapis.com{env.GEMINI_KEY}`;
+    // บรรทัดนี้สำคัญมาก ห้ามให้ขาดแม้แต่ตัวเดียวครับ
+    const apiEndpoint = "https://generativelanguage.googleapis.com" + env.GEMINI_KEY;
 
     try {
       const response = await fetch(apiEndpoint, {
@@ -14,22 +14,10 @@ export default {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          contents: [{
-            parts: [{
-              // ปรับคำสั่ง (Prompt) ให้ AI ตอบเป็นระเบียบและดูขลังขึ้น
-              text: `คุณคือหมอดูผู้เชี่ยวชาญการทำนายฝันและตัวเลขมงคล 
-                     จงทำนายฝันเรื่อง: "${dream}" 
-                     โดยให้รายละเอียดตามหัวข้อดังนี้:
-                     1. คำทำนายภาพรวม (ดีหรือร้าย)
-                     2. ด้านความรัก
-                     3. ด้านการงานและการเงิน
-                     4. เลขนำโชค (เน้นเลข 2 ตัว และ 3 ตัว)
-                     
-                     ตอบเป็นภาษาไทยที่สุภาพและเข้าใจง่าย`
-            }]
+          contents:
           }],
           generationConfig: {
-            temperature: 0.7, // เพิ่มความสร้างสรรค์ในการทำนาย
+            temperature: 0.7,
             maxOutputTokens: 800
           }
         })
@@ -45,7 +33,6 @@ export default {
       return new Response(predictionText, {
         headers: {
           "Content-Type": "text/plain; charset=utf-8",
-          // เพิ่ม CORS เผื่อคุณจะเอาไปใช้เรียกจากหน้าเว็บอื่น
           "Access-Control-Allow-Origin": "*"
         }
       });
