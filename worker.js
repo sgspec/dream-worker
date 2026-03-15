@@ -1,4 +1,4 @@
-export default {
+ export default {
   async fetch(request, env) {
 
     // รับค่าคำฝันจาก URL
