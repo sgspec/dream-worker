@@ -21,17 +21,13 @@ export default {
       }
     );
 
-    const data = await response.json();
+        const data = await res.json();
 
-    const text =
-      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-      "ไม่พบคำทำนาย";
+    // ดึงเฉพาะข้อความคำทำนายออกมาจากโครงสร้างของ Gemini 1.5
+    const result = data.candidates?.[0]?.content?.parts?.[0]?.text || "เกิดข้อผิดพลาด: AI ไม่ตอบกลับหรือคีย์ผิด";
 
-    return new Response(text, {
+    return new Response(result, {     
       headers: {
-        "Content-Type": "text/plain; charset=utf-8"
+        "Content-Type": "text/plain; charset=UTF-8"
       }
     });
-
-  }
-};
