@@ -1,13 +1,11 @@
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
 
     const url = new URL(request.url);
-    const dream = url.searchParams.get("dream");
+    const dream = url.searchParams.get("dream") || "ฝันเห็นงู";
 
-    const API_KEY = "YOUR_GEMINI_API_KEY";
-
-    const res = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=" + API_KEY,
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=" + env.GEMINI_KEY,
       {
         method: "POST",
         headers: {
@@ -16,19 +14,24 @@ export default {
         body: JSON.stringify({
           contents: [{
             parts: [{
-              text: "ทำนายฝันนี้พร้อมเลขนำโชค: " + dream
+              text: "ทำนายฝันนี้ พร้อมเลขนำโชค: " + dream
             }]
           }]
         })
       }
     );
 
-    const data = await res.json();
+    const data = await response.json();
 
-    return new Response(JSON.stringify(data), {
+    const text =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "ไม่พบคำทำนาย";
+
+    return new Response(text, {
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "text/plain; charset=utf-8"
       }
     });
+
   }
-}
+};
