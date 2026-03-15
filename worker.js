@@ -1,4 +1,4 @@
- export default {
+export default {
   async fetch(request, env) {
 
     // รับค่าคำฝันจาก URL
@@ -36,7 +36,8 @@
       // ส่งผลลัพธ์กลับ
       return new Response(result, {
         headers: {
-          "Content-Type": "text/plain; charset=UTF-8"
+          "Content-Type": "text/plain; charset=UTF-8",
+          "Access-Control-Allow-Origin": "*"
         }
       });
 
@@ -44,7 +45,8 @@
 
       return new Response("เกิดข้อผิดพลาด: " + error.message, {
         headers: {
-          "Content-Type": "text/plain; charset=UTF-8"
+          "Content-Type": "text/plain; charset=UTF-8",
+          "Access-Control-Allow-Origin": "*"
         }
       });
 
