@@ -10,7 +10,7 @@ export default {
       // เรียก Gemini API
       const response = await fetch(
 
-"https://generativelanguage.googleapis.com/v1beta/models/gemma-3-1b-it:generateContent?key=" + env.GEMINI_KEY,
+"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-preview:generateContent?key=" + env.GEMINI_KEY,
 
         {
           method: "POST",
@@ -20,7 +20,8 @@ export default {
           body: JSON.stringify({
             contents: [{
               parts: [{
-                text: "ทำนายฝัน '" + dream + "' แบบสั้นๆ พร้อมเลขนำโชค 3 ตัว"
+text: "ทำนายฝัน '" + dream + "' สรุปแบบสั้นๆ พร้อมเลขมงคล 3 ตัว (เน้นเลขเด่น 1 ชุด และเลขรอง 2-3 ชุด) ปิดท้ายด้วยหมายเหตุว่าเป็นความเชื่อส่วนบุคคล และไม่ต้องมีประโยคคำถามหรือคำชวนคุยปิดท้าย"
+
               }]
             }]
           })
@@ -56,3 +57,4 @@ export default {
 
   }
 };
+ 
